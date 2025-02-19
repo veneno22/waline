@@ -1,9 +1,13 @@
-import QRCode from 'qrcode.react';
-import React, { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import { gen2FAToken, get2FAToken, updateProfile } from '../../services/user';
+import {
+  gen2FAToken,
+  get2FAToken,
+  updateProfile,
+} from '../../services/user.js';
 
 export default function () {
   const { t } = useTranslation();
@@ -56,7 +60,7 @@ export default function () {
       {user['2fa'] ? (
         <div>
           <p>{t('enable 2fa')}</p>
-          <QRCode value={data.otpauth_url} size={256} />
+          <QRCodeSVG value={data.otpauth_url} size={256} />
           <br />
           <br />
           <button
@@ -116,7 +120,7 @@ export default function () {
       {!user['2fa'] && step === 3 && (
         <div>
           <p>{t('open app and scan qrcode')}</p>
-          <QRCode value={data.otpauth_url} size={256} />
+          <QRCodeSVG value={data.otpauth_url} size={256} />
           <form method="post" onSubmit={on2faUpdate}>
             <ul className="typecho-option">
               <li>

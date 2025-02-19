@@ -1,6 +1,8 @@
-<img src="./assets/logo.png" width="200" align="right" />
+<!-- markdownlint-disable MD033 MD041 -->
 
-# Waline 
+<img src="./assets/logo.png" width="200" align="right" alt="Waline logo" />
+
+# Waline
 
 ![Author](https://img.shields.io/badge/author-lizheming,%20Mr.Hope-blue?style=for-the-badge) ![License](https://img.shields.io/github/license/walinejs/waline?style=for-the-badge) [![qq](https://img.shields.io/badge/qq-waline交流群-f75137?logo=TencentQQ&style=for-the-badge)](https://jq.qq.com/?_wv=1027&k=bKoVBppG) [![telegram](https://img.shields.io/badge/telegram-walinejs-2ca5e0?logo=telegram&style=for-the-badge)](https://t.me/walinejs)
 
@@ -27,18 +29,18 @@ A simple comment system with backend support.
 - Deploy free!
 - Multiple deployment and storage service support, at least 243 deployment choice!
 
-|                                                 | Waline                              |                                                              |
-| ----------------------------------------------- | ----------------------------------- | ------------------------------------------------------------ |
-| **Client**                                      | **Server**                          | **Storage**                                                  |
-| [@waline/client](https://waline.js.org)         | [Vercel](https://vercel.com)        | [LeanCloud](https://leancloud.app)                           |
-| [MiniValine](https://minivaline.js.org/)        | [Deta](https://deta.space)          | [CloudBase](https://clodbase.net)                            |
-| [sodesu](https://github.com/BeiyanYunyi/sodesu) | [CloudBase](https://cloudbase.net/) | [MongoDB](https://mongodb.com)                               |
-|                                                 | [Railway](https://railway.app)      | MySQL                                                        |
-|                                                 | [Render](https://render.com)        | SQLite                                                       |
-|                                                 | [Zeabur](https://zeabur.com)        | [GitHub](https://github.com)                                 |
-|                                                 | [Netlify](https://netlify.com)      | PostgreSQL                                                   |
-|                                                 | Docker                              | [Deta Base](https://deta.space/docs/en/reference/base/about) |
-|                                                 | self host                           | [TiDB](https://tidbcloud.com/)                               |
+|                                                 | Waline                                                              |                                    |
+| ----------------------------------------------- | ------------------------------------------------------------------- | ---------------------------------- |
+| **Client**                                      | **Server**                                                          | **Storage**                        |
+| [@waline/client](https://waline.js.org)         | [Vercel](https://vercel.com)                                        | [LeanCloud](https://leancloud.app) |
+| [MiniValine](https://minivaline.js.org/)        | [CloudBase](https://cloudbase.net/)                                 | [CloudBase](https://clodbase.net)  |
+| [sodesu](https://github.com/BeiyanYunyi/sodesu) | [Railway](https://railway.app)                                      | [MongoDB](https://mongodb.com)     |
+|                                                 | [Render](https://render.com)                                        | MySQL                              |
+|                                                 | [Zeabur](https://zeabur.com)                                        | SQLite                             |
+|                                                 | [Netlify](https://netlify.com)                                      | [GitHub](https://github.com)       |
+|                                                 | [Alibaba Cloud ComputeNest](https://computenest.console.aliyun.com) | SQLite                             |
+|                                                 | Docker                                                              | PostgreSQL                         |
+|                                                 | self host                                                           | [TiDB](https://tidbcloud.com/)     |
 
 ## Todo
 
@@ -71,7 +73,7 @@ We **really** welcome you to contribute to waline!
 You can contact me through [discussions](https://github.com/walinejs/waline/discussions). Join our [telegram](https://t.me/walinejs) group or scan [QQ group](https://qm.qq.com/cgi-bin/qm/qr?k=rPZvq_EBfwQa6QZX7sToVlhH49c6ed0R&jump_from=webapi) qrcode to communicate about waline!
 
 <a href="https://qm.qq.com/cgi-bin/qm/qr?k=rPZvq_EBfwQa6QZX7sToVlhH49c6ed0R&jump_from=webapi" target="_blank">
-  <img src="./assets/qqgroup.jpg" width="300" />
+  <img src="./assets/qqgroup.jpg" width="300" alt="qq group qrcode" />
 </a>
 
 ## License

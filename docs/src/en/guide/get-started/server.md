@@ -1,7 +1,7 @@
 ---
 title: Server introduction
 icon: server
-redirectFrom: /en/guide/server/intro.html
+order: 2
 ---
 
 ## Deployment
@@ -10,9 +10,9 @@ In addition to deploying on Vercel for free, you can deploy via docker or direct
 
 - [Standalone deployment](../deploy/vps.md)
 
-- [Deta](../deploy/deta.md)
-
 - [Railway](../deploy/railway.md)
+
+- [Alibaba Cloud Compute Nest](../deploy/aliyun-computenest.md)
 
 ## Multiple Database Support
 
@@ -32,7 +32,7 @@ For configuration details, see [Server Reference → Environment Variables](../.
 
 We support multiple ways of notifying you or your commenters when someone comments or replies. See [Comment Notifications](../features/notification.md) for more details.
 
-## User Acccount Registration and Social Login 
+## User Account Registration and Social Login
 
 Waline supports in-app account creation and social login using GitHub, Twitter, and Facebook.
 

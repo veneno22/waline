@@ -4,12 +4,12 @@ import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
-import dts from 'rollup-plugin-dts';
+import { dts } from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 
-const { version } = <{ version: string }>(
-  createRequire(import.meta.url)('./package.json')
-);
+const { version } = createRequire(import.meta.url)('./package.json') as {
+  version: string;
+};
 
 export default [
   // full package

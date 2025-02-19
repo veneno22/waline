@@ -3,11 +3,13 @@ const Mysql = require('think-model-mysql');
 const Mysql2 = require('think-model-mysql2');
 const Postgresql = require('think-model-postgresql');
 
-let Sqlite = class {};
+let Sqlite;
 
 try {
   Sqlite = require('think-model-sqlite');
 } catch (err) {
+  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
+  Sqlite = class {};
   console.log(err);
 }
 
@@ -82,9 +84,7 @@ if (MONGO_DB) {
 }
 
 const isVercelPostgres =
-  type === 'postgresql' &&
-  POSTGRES_HOST &&
-  POSTGRES_HOST.endsWith('vercel-storage.com');
+  type === 'postgresql' && POSTGRES_HOST?.endsWith('vercel-storage.com');
 
 exports.model = {
   type,
