@@ -4,12 +4,12 @@ import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
-import dts from 'rollup-plugin-dts';
+import { dts } from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 
-const { version } = <{ version: string }>(
-  createRequire(import.meta.url)('./package.json')
-);
+const { version } = createRequire(import.meta.url)('./package.json') as {
+  version: string;
+};
 
 export default [
   // full package
@@ -117,7 +117,7 @@ export default [
 
   // components
   {
-    input: './src/entries/components.ts',
+    input: './src/entries/component.ts',
     output: [
       {
         file: './dist/component.js',
@@ -165,7 +165,11 @@ export default [
   },
 
   // components declaration files
-  // TODO: Generate declaration files
+  {
+    input: './src/entries/component-type.d.ts',
+    output: [{ file: './dist/component.d.ts', format: 'esm' }],
+    plugins: [dts({ compilerOptions: { preserveSymlinks: false } })],
+  },
 
   // comment
   {

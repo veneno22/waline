@@ -1,145 +1,26 @@
-<template>
-  <div data-waline>
-    <Reaction />
-
-    <CommentBox v-if="!reply" @log="refresh" @submit="onSubmit" />
-
-    <div class="wl-meta-head">
-      <div class="wl-count">
-        <span v-if="count" class="wl-num" v-text="count" />
-        {{ i18n.comment }}
-      </div>
-
-      <ul class="wl-sort">
-        <li
-          v-for="item in sortingMethods"
-          :key="item"
-          :class="[item === commentSortingRef ? 'active' : '']"
-          @click="onSortByChange(item)"
-        >
-          {{ i18n[item] }}
-        </li>
-      </ul>
-    </div>
-
-    <div class="wl-cards">
-      <CommentCard
-        v-for="comment in data"
-        :key="comment.objectId"
-        :root-id="comment.objectId"
-        :comment="comment"
-        :reply="reply"
-        :edit="edit"
-        @log="refresh"
-        @reply="onReply"
-        @edit="onEdit"
-        @submit="onSubmit"
-        @status="onStatusChange"
-        @delete="onDelete"
-        @sticky="onSticky"
-        @like="onLike"
-      />
-    </div>
-
-    <div v-if="status === 'error'" class="wl-operation">
-      <button
-        type="button"
-        class="wl-btn"
-        @click="refresh"
-        v-text="i18n.refresh"
-      />
-    </div>
-
-    <div v-else-if="status === 'loading'" class="wl-loading">
-      <LoadingIcon :size="30" />
-    </div>
-
-    <div v-else-if="!data.length" class="wl-empty" v-text="i18n.sofa" />
-
-    <!-- Load more button -->
-    <div v-else-if="page < totalPages" class="wl-operation">
-      <button
-        type="button"
-        class="wl-btn"
-        @click="loadMore"
-        v-text="i18n.more"
-      />
-    </div>
-
-    <!-- Copyright Information -->
-    <div v-if="config.copyright" class="wl-power">
-      Powered by
-      <a
-        href="https://github.com/walinejs/waline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Waline
-      </a>
-      v{{ version }}
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-/* eslint-disable vue/define-props-declaration */
 /* eslint-disable vue/no-unused-properties */
-/* eslint-disable vue/require-prop-comment */
-/* eslint-disable vue/require-prop-types */
-import { useStyleTag } from '@vueuse/core';
-import {
-  type WalineComment,
-  type WalineCommentStatus,
-  type WalineRootComment,
-  deleteComment,
-  getComment,
-  updateComment,
-} from '@waline/api';
-import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
 
-import Reaction from './ArticleReaction.vue';
+import { useStyleTag, watchImmediate } from '@vueuse/core';
+import type {
+  WalineComment,
+  WalineCommentStatus,
+  WalineRootComment,
+} from '@waline/api';
+import { deleteComment, getComment, updateComment } from '@waline/api';
+import { computed, onMounted, onUnmounted, provide, ref } from 'vue';
+
+import ArticleReaction from './ArticleReaction.vue';
 import CommentBox from './CommentBox.vue';
 import CommentCard from './CommentCard.vue';
 import { LoadingIcon } from './Icons.js';
-import { useUserInfo, useLikeStorage } from '../composables/index.js';
-import {
-  type WalineCommentSorting,
-  type WalineProps,
-} from '../typings/index.js';
+import { useLikeStorage, useUserInfo } from '../composables/index.js';
+import type { WalineCommentSorting, WalineProps } from '../typings/index.js';
 import { getConfig, getDarkStyle } from '../utils/index.js';
 import { version } from '../version.js';
+import { configKey, sortingMethods, sortKeyMap } from '../config/index.js';
 
-type SortKey = 'insertedAt_desc' | 'insertedAt_asc' | 'like_desc';
-
-const props = defineProps([
-  'serverURL',
-  'path',
-  'meta',
-  'requiredMeta',
-  'dark',
-  'commentSorting',
-  'lang',
-  'locale',
-  'pageSize',
-  'wordLimit',
-  'emoji',
-  'login',
-  'highlighter',
-  'texRenderer',
-  'imageUploader',
-  'search',
-  'copyright',
-  'recaptchaV3Key',
-  'turnstileKey',
-  'reaction',
-]);
-
-const sortKeyMap: Record<WalineCommentSorting, SortKey> = {
-  latest: 'insertedAt_desc',
-  oldest: 'insertedAt_asc',
-  hottest: 'like_desc',
-};
-const sortingMethods = Object.keys(sortKeyMap) as WalineCommentSorting[];
+const props = defineProps<WalineProps>();
 
 const userInfo = useUserInfo();
 const likeStorage = useLikeStorage();
@@ -165,7 +46,7 @@ const i18n = computed(() => config.value.locale);
 
 useStyleTag(darkmodeStyle, { id: 'waline-darkmode' });
 
-let abort: () => void;
+let abort: (() => void) | null = null;
 
 const getCommentData = (pageNumber: number): void => {
   const { serverURL, path, pageSize } = config.value;
@@ -183,7 +64,7 @@ const getCommentData = (pageNumber: number): void => {
     sortBy: sortKeyMap[commentSortingRef.value],
     page: pageNumber,
     signal: controller.signal,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
   })
     .then((resp) => {
       status.value = 'success';
@@ -192,9 +73,10 @@ const getCommentData = (pageNumber: number): void => {
       page.value = pageNumber;
       totalPages.value = resp.totalPages;
     })
-    .catch((err: Error) => {
-      if (err.name !== 'AbortError') {
-        console.error(err.message);
+    .catch((err: unknown) => {
+      if ((err as Error).name !== 'AbortError') {
+        // eslint-disable-next-line no-console
+        console.error((err as Error).message);
         status.value = 'error';
       }
     });
@@ -202,9 +84,11 @@ const getCommentData = (pageNumber: number): void => {
   abort = controller.abort.bind(controller);
 };
 
-const loadMore = (): void => getCommentData(page.value + 1);
+const loadMore = (): void => {
+  getCommentData(page.value + 1);
+};
 
-const refresh = (): void => {
+const refreshComments = (): void => {
   count.value = 0;
   data.value = [];
   getCommentData(1);
@@ -213,7 +97,7 @@ const refresh = (): void => {
 const onSortByChange = (item: WalineCommentSorting): void => {
   if (commentSortingRef.value !== item) {
     commentSortingRef.value = item;
-    refresh();
+    refreshComments();
   }
 };
 
@@ -259,7 +143,7 @@ const onStatusChange = async ({
   await updateComment({
     serverURL,
     lang,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
     objectId: comment.objectId,
     comment: { status },
   });
@@ -275,7 +159,7 @@ const onSticky = async (comment: WalineComment): Promise<void> => {
   await updateComment({
     serverURL,
     lang,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
     objectId: comment.objectId,
     comment: { sticky: comment.sticky ? 0 : 1 },
   });
@@ -291,7 +175,7 @@ const onDelete = async ({ objectId }: WalineComment): Promise<void> => {
   await deleteComment({
     serverURL,
     lang,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
     objectId,
   });
 
@@ -326,7 +210,7 @@ const onLike = async (comment: WalineComment): Promise<void> => {
     serverURL,
     lang,
     objectId,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
     comment: { like: !hasLiked },
   });
 
@@ -339,18 +223,107 @@ const onLike = async (comment: WalineComment): Promise<void> => {
       likeStorage.value = likeStorage.value.slice(-50);
   }
 
-  comment.like = (comment.like || 0) + (hasLiked ? -1 : 1);
+  comment.like = Math.max(0, (comment.like || 0) + (hasLiked ? -1 : 1));
 };
 
-provide('config', config);
+provide(configKey, config);
 
 onMounted(() => {
-  watch(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  watchImmediate(
     () => [props.serverURL, props.path],
-    () => refresh(),
-    { immediate: true },
+    () => {
+      refreshComments();
+    },
   );
 });
-onUnmounted(() => abort?.());
+onUnmounted(() => {
+  abort?.();
+});
 </script>
+
+<template>
+  <div data-waline>
+    <ArticleReaction />
+
+    <CommentBox
+      v-if="!reply && !edit"
+      @log="refreshComments"
+      @submit="onSubmit"
+    />
+
+    <div class="wl-meta-head">
+      <div class="wl-count">
+        <span v-if="count" class="wl-num" v-text="count" />
+        {{ i18n.comment }}
+      </div>
+
+      <ul class="wl-sort">
+        <li
+          v-for="item in sortingMethods"
+          :key="item"
+          :class="[item === commentSortingRef ? 'active' : '']"
+          @click="onSortByChange(item)"
+        >
+          {{ i18n[item] }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="wl-cards">
+      <CommentCard
+        v-for="comment in data"
+        :key="comment.objectId"
+        :root-id="comment.objectId"
+        :comment="comment"
+        :reply="reply"
+        :edit="edit"
+        @log="refreshComments"
+        @reply="onReply"
+        @edit="onEdit"
+        @submit="onSubmit"
+        @status="onStatusChange"
+        @delete="onDelete"
+        @sticky="onSticky"
+        @like="onLike"
+      />
+    </div>
+
+    <div v-if="status === 'error'" class="wl-operation">
+      <button
+        type="button"
+        class="wl-btn"
+        @click="refreshComments"
+        v-text="i18n.refresh"
+      />
+    </div>
+
+    <div v-else-if="status === 'loading'" class="wl-loading">
+      <LoadingIcon :size="30" />
+    </div>
+
+    <div v-else-if="!data.length" class="wl-empty" v-text="i18n.sofa" />
+
+    <!-- Load more button -->
+    <div v-else-if="page < totalPages" class="wl-operation">
+      <button
+        type="button"
+        class="wl-btn"
+        @click="loadMore"
+        v-text="i18n.more"
+      />
+    </div>
+
+    <!-- Copyright Information -->
+    <div v-if="!config.noCopyright" class="wl-power">
+      Powered by
+      <a
+        href="https://github.com/walinejs/waline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Waline
+      </a>
+      v{{ version }}
+    </div>
+  </div>
+</template>

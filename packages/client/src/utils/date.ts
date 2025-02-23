@@ -1,6 +1,5 @@
-import { WalineDateLocale } from '../typings';
-
-import { isString } from '.';
+import { isString } from './type.js';
+import type { WalineDateLocale } from '../typings/index.js';
 
 const padWithZeros = (vNumber: number, width: number): string => {
   let numAsString = vNumber.toString();
@@ -28,7 +27,7 @@ export const getTimeAgo = (
   if (!date) return '';
 
   const time = isString(date)
-    ? new Date(date.indexOf(' ') !== -1 ? date.replace(/-/g, '/') : date)
+    ? new Date(date.includes(' ') ? date.replace(/-/g, '/') : date)
     : date;
 
   const timePassed = now.getTime() - time.getTime();

@@ -1,4 +1,5 @@
-import { type FunctionalComponent, h } from 'vue';
+import type { FunctionalComponent } from 'vue';
+import { h } from 'vue';
 
 export const CloseIcon: FunctionalComponent<{ size: number }> = ({ size }) =>
   h(
@@ -146,7 +147,6 @@ export const LoadingIcon: FunctionalComponent<{ size?: number }> = ({
         stroke: 'currentColor',
         strokeWidth: '4',
         r: '40',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         'stroke-dasharray': '85 30',
       },
       h('animateTransform', {
