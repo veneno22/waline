@@ -1,7 +1,9 @@
 ---
 title: Get Started
 icon: creative
-redirectFrom: /en/guide/get-started.html
+dir:
+  collapsible: false
+  order: 1
 ---
 
 Welcome to Waline. In just a few steps, you can enable Waline to provide comments and pageviews on your site.
@@ -119,13 +121,13 @@ Here is how you can add Waline to your web page or website:
 ## Comment Management (Management)
 
 1. After the deployment is complete, please visit `<serverURL>/ui/register` to register. The first person to register will be set as an administrator.
-   
+
 1. After you log in as administrator, you'll be able to access the comment management dashboard. You can edit, mark or delete comments here.
-   
+
 1. Users can also register for an account via the comment box, and will be redirected to their profile page after logging in.
 
 ## Video Tutorial
 
 An enthusiastic Waline user made the following video tutorial. If the instructions above aren't clear, you can refer to the video:
 
-<YouTube id="SzEHzsme8uY" />
+<VidStack src="https://www.youtube.com/watch?v=SzEHzsme8uY" />

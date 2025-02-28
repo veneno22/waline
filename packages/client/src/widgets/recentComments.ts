@@ -1,4 +1,5 @@
-import { type RecentCommentData, getRecentComment } from '@waline/api';
+import type { RecentCommentData } from '@waline/api';
+import { getRecentComment } from '@waline/api';
 
 import { useUserInfo } from '../composables/index.js';
 import { getRoot } from '../utils/index.js';
@@ -66,7 +67,7 @@ export const RecentComments = ({
     count,
     lang,
     signal: controller.signal,
-    token: userInfo.value?.token,
+    token: userInfo.value.token,
   }).then((comments) => {
     if (root && comments.length) {
       root.innerHTML = `<ul class="wl-recent-list">${comments

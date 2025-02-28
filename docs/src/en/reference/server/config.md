@@ -1,7 +1,6 @@
 ---
 title: Server Config
 icon: config
-redirectFrom: /en/reference/server.html
 ---
 
 The following options need to be configured in the server entry file `index.js`.
@@ -133,6 +132,12 @@ For details, see [Customize Database Service](../../cookbook/customize/database.
 - type: `function`
 
 See [Customize User System](../../cookbook/customize/userdb.md) for details
+
+### locales
+
+- type: `Record<string, Record<string, string>>`
+
+See [Custom Locale](../../cookbook/customize/locale.md)
 
 ## Comment Hooks
 

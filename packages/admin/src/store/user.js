@@ -1,5 +1,11 @@
-import { getUserInfo, login, logout, register, forgot } from '../services/auth';
-import { updateProfile } from '../services/user';
+import {
+  forgot,
+  getUserInfo,
+  login,
+  logout,
+  register,
+} from '../services/auth.js';
+import { updateProfile } from '../services/user.js';
 
 export const user = {
   state: null,
@@ -15,7 +21,7 @@ export const user = {
     async loadUserInfo() {
       const user = await getUserInfo();
 
-      if (!user || !user.email) {
+      if (!user?.email) {
         return;
       }
       if (window.opener) {

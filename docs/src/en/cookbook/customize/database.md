@@ -1,6 +1,7 @@
 ---
 title: Custom Database Service
 icon: database
+order: -2
 ---
 
 Waline classifies database operations into several operations such as CURD, and all upper-level logic is completed through the superposition of these basic operations. Through the adapter mode, different types of database storage services only need to implement these low-level atomic operations to run through all system logic.
@@ -156,7 +157,6 @@ Based on the above logic, in addition to implementing the storage service of pro
 const path = require('path');
 
 const { parseString, writeToString } = require('fast-csv');
-const fetch = require('node-fetch');
 
 const Base = require('./base');
 

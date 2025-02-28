@@ -1,7 +1,6 @@
 ---
 title: 服务端环境变量
 icon: config
-redirectFrom: /reference/env.html
 ---
 
 你可以通过下面的环境变量对 Waline 服务端进行配置。
@@ -18,15 +17,16 @@ Vercel 需要在 <kbd>Settings</kbd> - <kbd>Environment Variables</kbd> 中进�
 
 ## 主要配置
 
-| 环境变量名称      | 必填 | 备注                                         |
-| ----------------- | ---- | -------------------------------------------- |
-| `LEAN_ID`         | ✅   | LeanCloud 应用的 App ID                      |
-| `LEAN_KEY`        | ✅   | LeanCloud 应用的 App Key                     |
-| `LEAN_MASTER_KEY` | ✅   | LeanCloud 应用的 Master Key 用于后台修改数据 |
-| `LEAN_SERVER`     | ⚠   | LeanCloud 服务地址，国内版用户需要配置此项   |
-| `SITE_NAME`       |      | 博客名称                                     |
-| `SITE_URL`        |      | 博客地址                                     |
-| `LOGIN`           |      | 当设置为 LOGIN=force 时会要求登录才能评论    |
+| 环境变量名称      | 必填 | 备注                                                        |
+| ----------------- | ---- | ----------------------------------------------------------- |
+| `LEAN_ID`         | ✅   | LeanCloud 应用的 App ID                                     |
+| `LEAN_KEY`        | ✅   | LeanCloud 应用的 App Key                                    |
+| `LEAN_MASTER_KEY` | ✅   | LeanCloud 应用的 Master Key 用于后台修改数据                |
+| `LEAN_SERVER`     | ⚠   | LeanCloud 服务地址，国内版用户需要配置此项                  |
+| `SITE_NAME`       |      | 博客名称                                                    |
+| `SITE_URL`        |      | 博客地址                                                    |
+| `LOGIN`           |      | 当设置为 LOGIN=force 时会要求登录才能评论                   |
+| `SERVER_URL`      |      | 设置 Waline Server 的地址，适合在自动生成的地址不正确时填写 |
 
 ## 显示
 
@@ -211,12 +211,6 @@ SMTP 的用户名通常均支持用户的完整邮箱，而密码大多同邮箱
 | `GITHUB_TOKEN` | ✅   |        | [Personal access tokens](https://github.com/settings/tokens)             |
 | `GITHUB_REPO`  | ✅   |        | 仓库名称，例如 `walinejs/waline`                                         |
 | `GITHUB_PATH`  |      |        | 数据存储目录，例如 `data` 表示存储在 `data` 目录下，默认存在仓库根目录下 |
-
-### Deta Base
-
-| 环境变量名称       | 必填 | 默认值 | 备注          |
-| ------------------ | ---- | ------ | ------------- |
-| `DETA_PROJECT_KEY` | ✅   |        | Deta 项目密钥 |
 
 ## 高级配置
 

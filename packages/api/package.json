@@ -1,6 +1,6 @@
 {
   "name": "@waline/api",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0",
   "description": "Client API for Waline comment system",
   "keywords": [
     "api",
@@ -14,7 +14,7 @@
   "author": {
     "name": "Mr.Hope",
     "email": "mister-hope@outlook.com",
-    "url": "https://mrhope.site"
+    "url": "https://mister-hope.com"
   },
   "type": "module",
   "exports": {

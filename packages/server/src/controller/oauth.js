@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const fetch = require('node-fetch');
 
 module.exports = class extends think.Controller {
   constructor(ctx) {
@@ -57,7 +56,7 @@ module.exports = class extends think.Controller {
       },
     ).then((resp) => resp.json());
 
-    if (!user || !user.id) {
+    if (!user?.id) {
       return this.fail(user);
     }
 

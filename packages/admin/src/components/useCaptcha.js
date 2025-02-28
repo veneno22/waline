@@ -1,5 +1,5 @@
-import { useRecaptcha } from './useRecaptchaV3';
-import { useTurnstile } from './useTurnstile';
+import { useRecaptcha } from './useRecaptchaV3.js';
+import { useTurnstile } from './useTurnstile.js';
 
 export function useCaptcha(config) {
   const recaptchaV3 = useRecaptcha(config);
@@ -12,5 +12,7 @@ export function useCaptcha(config) {
     return recaptchaV3;
   }
 
-  return () => {};
+  return () => {
+    // do nothing
+  };
 }

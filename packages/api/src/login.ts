@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { type BaseAPIOptions } from './utils.js';
+import type { BaseAPIOptions } from './utils.js';
 
 export interface UserInfo {
   /**
@@ -50,7 +50,7 @@ export interface UserInfo {
    *
    * User object ID
    */
-  objectId: string | number;
+  objectId: number;
 
   /**
    * 用户身份

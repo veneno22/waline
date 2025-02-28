@@ -1,7 +1,6 @@
 ---
 title: Server Environment Variables
 icon: config
-redirectFrom: /en/reference/env.html
 ---
 
 You can customize Waline Server through the following environment variables.
@@ -18,15 +17,16 @@ You should set through `Settings` - `Environment Variables` when using Vercel.
 
 ## Basic
 
-| Environment Variables | Required | Description                                             |
-| --------------------- | -------- | ------------------------------------------------------- |
-| `LEAN_ID`             | ✅       | LeanCloud Application ID                                |
-| `LEAN_KEY`            | ✅       | LeanCloud Application Key                               |
-| `LEAN_MASTER_KEY`     | ✅       | LeanCloud Application Master Key                        |
-| `LEAN_SERVER`         | ⚠       | LeanCloud server address if you're leancloud china user |
-| `SITE_NAME`           |          | site name                                               |
-| `SITE_URL`            |          | site url                                                |
-| `LOGIN`               |          | User need login before comment when `LOGIN=force`       |
+| Environment Variables | Required | Description                                                                                |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| `LEAN_ID`             | ✅       | LeanCloud Application ID                                                                   |
+| `LEAN_KEY`            | ✅       | LeanCloud Application Key                                                                  |
+| `LEAN_MASTER_KEY`     | ✅       | LeanCloud Application Master Key                                                           |
+| `LEAN_SERVER`         | ⚠       | LeanCloud server address if you're leancloud china user                                    |
+| `SITE_NAME`           |          | site name                                                                                  |
+| `SITE_URL`            |          | site url                                                                                   |
+| `LOGIN`               |          | User need login before comment when `LOGIN=force`                                          |
+| `SERVER_URL`          |          | the url of the Waline Server, useful when the automatically generated address is incorrect |
 
 ## Display
 
@@ -209,12 +209,6 @@ Please pay special attention that some mailboxes use separate SMTP passwords.
 | `GITHUB_TOKEN`       | ✅       |         | [Personal access tokens](https://github.com/settings/tokens)                                                     |
 | `GITHUB_REPO`        | ✅       |         | repository name, such as `walinejs/waline`                                                                       |
 | GITHUB_PATH          |          |         | The data storage directory, such as `data` means it is stored in the `data` directory, root directory by default |
-
-### Deta Base
-
-| Environment Variable | Required | Default | Description             |
-| -------------------- | -------- | ------- | ----------------------- |
-| `DETA_PROJECT_KEY`   | ✅       |         | Deta project secret key |
 
 ## Advanced
 

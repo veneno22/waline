@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useTranslation, Trans } from 'react-i18next';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 
-import { LANGUAGE_OPTIONS } from '../locales';
+import { LANGUAGE_OPTIONS } from '../locales/index.js';
 
 export default function () {
   const dispatch = useDispatch();

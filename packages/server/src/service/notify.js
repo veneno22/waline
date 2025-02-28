@@ -1,7 +1,6 @@
 const crypto = require('node:crypto');
 
 const FormData = require('form-data');
-const fetch = require('node-fetch');
 const nodemailer = require('nodemailer');
 const nunjucks = require('nunjucks');
 
@@ -111,7 +110,8 @@ module.exports = class extends think.Service {
   }
 
   async qywxAmWechat({ title, content }, self, parent) {
-    const { QYWX_AM, SITE_NAME, SITE_URL } = process.env;
+    const { QYWX_AM, QYWX_PROXY, QYWX_PROXY_PORT, SITE_NAME, SITE_URL } =
+      process.env;
 
     if (!QYWX_AM) {
       return false;
@@ -136,6 +136,7 @@ module.exports = class extends think.Service {
         postUrl: SITE_URL + self.url + '#' + self.objectId,
       },
     };
+
     const contentWechat =
       think.config('WXTemplate') ||
       `💬 {{site.name|safe}}的文章《{{postName}}》有新评论啦 
@@ -154,8 +155,18 @@ module.exports = class extends think.Service {
     querystring.set('corpid', `${QYWX_AM_AY[0]}`);
     querystring.set('corpsecret', `${QYWX_AM_AY[1]}`);
 
+    let baseUrl = 'https://qyapi.weixin.qq.com';
+
+    if (QYWX_PROXY) {
+      if (!QYWX_PROXY_PORT) {
+        baseUrl = `http://${QYWX_PROXY}`;
+      } else {
+        baseUrl = `http://${QYWX_PROXY}:${QYWX_PROXY_PORT}`;
+      }
+    }
+
     const { access_token } = await fetch(
-      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?${querystring.toString()}`,
+      `${baseUrl}/cgi-bin/gettoken?${querystring.toString()}`,
       {
         headers: {
           'content-type': 'application/json',
@@ -164,7 +175,7 @@ module.exports = class extends think.Service {
     ).then((resp) => resp.json());
 
     return fetch(
-      `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${access_token}`,
+      `${baseUrl}/cgi-bin/message/send?access_token=${access_token}`,
       {
         method: 'POST',
         headers: {
@@ -346,13 +357,13 @@ module.exports = class extends think.Service {
 
     const form = new FormData();
 
-    topic && form.append('topic', topic);
-    template && form.append('template', template);
-    channel && form.append('channel', channel);
-    webhook && form.append('webhook', webhook);
-    callbackUrl && form.append('callbackUrl', callbackUrl);
-    title && form.append('title', title);
-    content && form.append('content', content);
+    if (topic) form.append('topic', topic);
+    if (template) form.append('template', template);
+    if (channel) form.append('channel', channel);
+    if (webhook) form.append('webhook', webhook);
+    if (callbackUrl) form.append('callbackUrl', callbackUrl);
+    if (title) form.append('title', title);
+    if (content) form.append('content', content);
 
     return fetch(`http://www.pushplus.plus/send/${PUSH_PLUS_KEY}`, {
       method: 'POST',
@@ -487,13 +498,14 @@ module.exports = class extends think.Service {
 
     const mailList = [];
     const isAuthorComment = AUTHOR
-      ? comment.mail.toLowerCase() === AUTHOR.toLowerCase()
+      ? (comment.mail || '').toLowerCase() === AUTHOR.toLowerCase()
       : false;
     const isReplyAuthor = AUTHOR
-      ? parent && parent.mail.toLowerCase() === AUTHOR.toLowerCase()
+      ? parent && (parent.mail || '').toLowerCase() === AUTHOR.toLowerCase()
       : false;
     const isCommentSelf =
-      parent && parent.mail.toLowerCase() === comment.mail.toLowerCase();
+      parent &&
+      (parent.mail || '').toLowerCase() === (comment.mail || '').toLowerCase();
 
     const title = mailSubjectAdmin || 'MAIL_SUBJECT_ADMIN';
     const content = mailTemplateAdmin || 'MAIL_TEMPLATE_ADMIN';
@@ -539,9 +551,9 @@ module.exports = class extends think.Service {
       });
     }
 
-    for (let i = 0; i < mailList.length; i++) {
+    for (const mail of mailList) {
       try {
-        const response = await this.mail(mailList[i], comment, parent);
+        const response = await this.mail(mail, comment, parent);
 
         console.log('Notification mail send success: %s', response);
       } catch (e) {

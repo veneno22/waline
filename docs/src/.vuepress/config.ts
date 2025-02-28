@@ -1,11 +1,10 @@
-import { type UserConfig, defineUserConfig } from 'vuepress';
+import { viteBundler } from '@vuepress/bundler-vite';
+import { defineUserConfig } from 'vuepress';
 import { path } from 'vuepress/utils';
-import { redirectPlugin } from 'vuepress-plugin-redirect';
-import { addViteSsrNoExternal } from 'vuepress-shared';
 
 import theme from './theme.js';
 
-export default <UserConfig>defineUserConfig({
+export default defineUserConfig({
   locales: {
     '/': {
       lang: 'zh-CN',
@@ -19,15 +18,24 @@ export default <UserConfig>defineUserConfig({
     },
   },
 
+  bundler: viteBundler({
+    viteOptions: {
+      ssr: {
+        noExternal: ['@fancyapps/ui'],
+      },
+    },
+  }),
+
   markdown: {
-    code: {
-      lineNumbers: 20,
+    importCode: {
+      handleImportPath: (str) =>
+        str === '@waline/api/types'
+          ? path.resolve(__dirname, '../../../packages/api/dist/api.d.ts')
+          : str,
     },
   },
 
   theme,
-
-  plugins: [redirectPlugin()],
 
   alias: {
     '@MigrationTool': path.resolve(__dirname, './components/MigrationTool.vue'),
@@ -39,9 +47,5 @@ export default <UserConfig>defineUserConfig({
       __dirname,
       './components/NormalPage',
     ),
-  },
-
-  extendsBundlerOptions: (bundlerOptions, app) => {
-    addViteSsrNoExternal(bundlerOptions, app, '@fancyapps/ui');
   },
 });

@@ -1,6 +1,7 @@
 ---
 title: FAQ
 icon: faq
+order: 4
 ---
 
 Waline has a very clear position since its birth:
@@ -47,10 +48,6 @@ The server refers to the backend service corresponding to the `serverURL` config
 Go to the corresponding GitHub repository and modify the version number of `@waline/vercel` in the package.json file to the latest.
 
 ![vercel](./assets/vercel-update.png)
-
-#### Deta
-
-[Deta - How to update?](../guide/deploy/deta.md#how-to-update)
 
 #### CloudBase
 
